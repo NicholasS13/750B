@@ -1,4 +1,15 @@
 #include "config.h"
+#include "include/okapi/api.hpp"
+
+/*
+Have: WHEEL_CIRCUMFERENCE
+inches / WHEEL_CIRCUMFERENCE = rotations of wheel needed
+rotations * ENCODER_TICKS_PER_ROTATION = ticks needed
+*/
+void driveFor(float inches)
+{
+  float ticksNeeded = inches / WHEEL_CIRCUMFERENCE * ENCODER_TICKS_PER_ROTATION;
+}
 
 /**
  * Runs the user autonomous code. This function will be started in its own task
@@ -13,6 +24,10 @@
  */
 void autonomous()
 {
+  using namespace auton;
+
+
+
   for (AutonAction* step : *autonActions)
   {
     float mag = step->getMagnitude();
@@ -22,25 +37,25 @@ void autonomous()
       // mag: 50 is half a tile
       // 50 : 1/2
       // 100 : 1
-      case FORWARD_BACKWARD:
+      case AutonActionType::FORWARD_BACKWARD:
         mag /= 100; // now in terms of tiles
         mag *= TILE_LENGTH; // now in terms of inches
         driveFor(mag);
         break;
-      case STRAFE:
+      case AutonActionType::STRAFE:
         mag /= 100;
         mag *= TILE_LENGTH;
         center_mtr->move_velocity(mag);
         break;
-      case INTAKE_SPIN:
-		intake_mtr->move_velocity(mag);
-		break;
-      case MOGO_IN_OUT:
-		mogo_mtr->move_velocity(mag);
-		break;
-      case MOGO_RELEASE:
-		mogo_release_mtr->move_velocity(100);
-		break;
+      case AutonActionType::INTAKE_SPIN:
+    		intake_mtr->move_velocity(mag);
+    		break;
+      case AutonActionType::MOGO_IN_OUT:
+    		mogo_mtr->move_velocity(mag);
+    		break;
+      case AutonActionType::MOGO_RELEASE:
+    		mogo_release_mtr->move_velocity(100);
+    		break;
     }
   }
 }

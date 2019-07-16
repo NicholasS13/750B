@@ -1,4 +1,15 @@
 #include "config.h"
+#include "include/okapi/api.hpp"
+
+/*
+Have: WHEEL_CIRCUMFERENCE
+inches / WHEEL_CIRCUMFERENCE = rotations of wheel needed
+rotations * ENCODER_TICKS_PER_ROTATION = ticks needed
+*/
+void driveFor(float inches)
+{
+  float ticksNeeded = inches / WHEEL_CIRCUMFERENCE * ENCODER_TICKS_PER_ROTATION;
+}
 
 /**
  * Runs the user autonomous code. This function will be started in its own task
@@ -14,6 +25,8 @@
 void autonomous()
 {
   using namespace auton;
+
+
 
   for (AutonAction* step : *autonActions)
   {
