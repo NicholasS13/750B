@@ -44,7 +44,7 @@ void on_center_button()
  */
 void initialize()
 {
-
+	pros::lcd::initialize();
 }
 
 /**
@@ -59,7 +59,7 @@ Updates the auton creation display
 */
 void refreshAutonDisplay()
 {
-
+	pros::lcd::set_text(autonActions->size(), autonActions->back()->to_string());
 }
 
 /**

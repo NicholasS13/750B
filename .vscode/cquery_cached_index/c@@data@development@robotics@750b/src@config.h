@@ -68,12 +68,30 @@ class AutonAction
 private:
   auton::AutonActionType type;
   float mag;
+	static std::string colonSpace;
+	std::string to_string(auton::AutonActionType type)
+	{
+		using namespace auton;
+
+		switch (type)
+		{
+			case FORWARD_BACKWARD: return "FORWARD_BACKWARD";
+			case TURN: return "TURN";
+			case STRAFE: return "STRAFE";
+			case INTAKE_SPIN: return "INTAKE_SPIN";
+			case MOGO_IN_OUT: return "MOGO_IN_OUT";
+			case auton::MOGO_RELEASE: return "MOGO_RELEASE";
+		}
+	}
 public:
   AutonAction(auton::AutonActionType type, uint16_t mag) { this->type = type; this->mag = mag; }
   auton::AutonActionType getType() { return type; }
   void change(int change) { mag += change; }
 	float getMagnitude() { return mag; }
+	std::string toString() { return to_string(type) + colonSpace + std::to_string(mag); };
 };
+
+std::string AutonAction::colonSpace = std::string(": ");
 
 /*
 TODO store autonActions in an deque
