@@ -13,8 +13,6 @@
  */
 void autonomous()
 {
-  using namespace auton;
-
   for (AutonAction* step : *autonActions)
   {
     float mag = step->getMagnitude();
@@ -24,25 +22,25 @@ void autonomous()
       // mag: 50 is half a tile
       // 50 : 1/2
       // 100 : 1
-      case AutonActionType::FORWARD_BACKWARD:
+      case FORWARD_BACKWARD:
         mag /= 100; // now in terms of tiles
         mag *= TILE_LENGTH; // now in terms of inches
         driveFor(mag);
         break;
-      case AutonActionType::STRAFE:
+      case STRAFE:
         mag /= 100;
         mag *= TILE_LENGTH;
         center_mtr->move_velocity(mag);
         break;
-      case AutonActionType::INTAKE_SPIN:
-    		intake_mtr->move_velocity(mag);
-    		break;
-      case AutonActionType::MOGO_IN_OUT:
-    		mogo_mtr->move_velocity(mag);
-    		break;
-      case AutonActionType::MOGO_RELEASE:
-    		mogo_release_mtr->move_velocity(100);
-    		break;
+      case INTAKE_SPIN:
+		intake_mtr->move_velocity(mag);
+		break;
+      case MOGO_IN_OUT:
+		mogo_mtr->move_velocity(mag);
+		break;
+      case MOGO_RELEASE:
+		mogo_release_mtr->move_velocity(100);
+		break;
     }
   }
 }

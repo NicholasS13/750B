@@ -14,7 +14,7 @@
 void autonomous()
 {
   using namespace auton;
-
+  
   for (AutonAction* step : *autonActions)
   {
     float mag = step->getMagnitude();

@@ -55,21 +55,21 @@ namespace auton
 	const auto a_BREAK = pros::E_CONTROLLER_DIGITAL_Y;
 
 	const auto a_REMOVE_LAST = pros::E_CONTROLLER_DIGITAL_B;
-}
 
-enum AutonActionType
-{
-  FORWARD_BACKWARD, TURN, STRAFE, INTAKE_SPIN, MOGO_IN_OUT, MOGO_RELEASE
-};
+	enum AutonActionType
+	{
+	  FORWARD_BACKWARD, TURN, STRAFE, INTAKE_SPIN, MOGO_IN_OUT, MOGO_RELEASE
+	};
+}
 
 class AutonAction
 {
 private:
-  AutonActionType type;
+  auton::AutonActionType type;
   float mag;
 public:
-  AutonAction(AutonActionType type, uint16_t mag) { this->type = type; this->mag = mag; }
-  AutonActionType getType() { return type; }
+  AutonAction(auton::AutonActionType type, uint16_t mag) { this->type = type; this->mag = mag; }
+  auton::AutonActionType getType() { return type; }
   void change(int change) { mag += change; }
 	float getMagnitude() { return mag; }
 };
