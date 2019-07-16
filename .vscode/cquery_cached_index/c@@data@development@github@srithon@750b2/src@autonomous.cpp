@@ -1,4 +1,4 @@
-#include "main.h"
+#include "config.h"
 
 /**
  * Runs the user autonomous code. This function will be started in its own task
@@ -13,5 +13,35 @@
  */
 void autonomous()
 {
+  for (AutonAction* step : *autonActions)
+  {
+    float mag = step->getMagnitude();
 
+    switch (step->getType())
+    {
+      // mag: 50 is half a tile
+      // 50 : 1/2
+      // 100 : 1
+      case FORWARD_BACKWARD:
+        mag /= 100; // now in terms of tiles
+        mag *= TILE_LENGTH; // now in terms of inches
+        driveFor(mag);
+        break;
+      //case TURN:
+
+      //break;
+      case STRAFE:
+        mag /= 100;
+        mag *= TILE_LENGTH;
+        strafe(mag);
+        break;
+      case INTAKE_SPIN:
+        
+      break;
+      case MOGO_IN_OUT:
+      break;
+      case MOGO_RELEASE:
+      break;
+    }
+  }
 }

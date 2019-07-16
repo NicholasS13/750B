@@ -1,4 +1,3 @@
-#include "main.h"
 #include "config.h"
 
 /**
@@ -16,19 +15,22 @@
  */
 void opcontrol()
 {
-	pros::Controller master(pros::E_CONTROLLER_MASTER);
-	
-	pros::Motor left_mtr_back(LEFT_MOTOR_BACK_PORT);
-	pros::Motor right_mtr_back(RIGHT_MOTOR_BACK_PORT);
-	pros::Motor left_mtr_front(LEFT_MOTOR_FRONT_PORT);
-	pros::Motor right_mtr_front(RIGHT_MOTOR_FRONT_PORT);
-
 	while (true)
 	{
-		int turn = master.get_analog(TURN_AXIS);
-		int forward = master.get_analog(FORWARD_BACK_AXIS);
+		if (controller->get_analog(STRAFE_AXIS))
+		{
 
+		}
+		else
+		{
+			int turn = controller->get_analog(TURN_AXIS);
+			int forward = controller->get_analog(FORWARD_BACK_AXIS);
 
+			right_mtr_back->move_velocity(forward - turn);
+			right_mtr_front->move_velocity(forward - turn);
+			left_mtr_back->move_velocity(forward + turn);
+			left_mtr_front->move_velocity(forward + turn);
+		}
 
 		pros::delay(20);
 	}
