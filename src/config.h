@@ -2,6 +2,7 @@
 #define CONFIG
 
 #include "main.h"
+#include "okapi/api.hpp"
 #include <vector>
 
 const uint8_t LEFT_MOTOR_BACK_PORT = 15;
@@ -15,8 +16,8 @@ const uint8_t INTAKE_MOTOR_PORT = 10;
 const uint8_t MOGO_MOTOR_PORT = 9;
 const uint8_t MOGO_RELEASE_MOTOR_PORT = 8;
 
+const float BOT_RADIUS = 1.24;
 
-const float PI = 3.1415962;
 const uint8_t WHEEL_CIRCUMFERENCE = 4 * PI; // inches
 const uint8_t TILE_LENGTH = 24; // inches
 
@@ -282,10 +283,8 @@ public class Deque<Item> implements Iterable<Item>
 extern std::vector<AutonAction*>* autonActions;
 extern pros::Controller* controller;
 
-extern pros::Motor* left_mtr_back;//(LEFT_MOTOR_BACK_PORT);
-extern pros::Motor* right_mtr_back;//(RIGHT_MOTOR_BACK_PORT);
-extern pros::Motor* left_mtr_front;//(LEFT_MOTOR_FRONT_PORT);
-extern pros::Motor* right_mtr_front;//(RIGHT_MOTOR_FRONT_PORT);
+extern okapi::MotorGroup* left_mtrs;//(LEFT_MOTOR_BACK_PORT);
+extern okapi::MotorGroup* right_mtrs;//(RIGHT_MOTOR_BACK_PORT);
 extern pros::Motor* center_mtr;
 
 extern pros::Motor* intake_mtr;

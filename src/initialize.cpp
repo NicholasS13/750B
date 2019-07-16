@@ -4,10 +4,9 @@ std::vector<AutonAction*>* autonActions = new std::vector<AutonAction*>();
 
 pros::Controller* controller = new pros::Controller(pros::E_CONTROLLER_MASTER);
 
-pros::Motor* left_mtr_back = new pros::Motor(LEFT_MOTOR_BACK_PORT);
-pros::Motor* right_mtr_back = new pros::Motor(RIGHT_MOTOR_BACK_PORT);
-pros::Motor* left_mtr_front = new pros::Motor(LEFT_MOTOR_FRONT_PORT);
-pros::Motor* right_mtr_front = new pros::Motor(RIGHT_MOTOR_FRONT_PORT);
+okapi::MotorGroup* left_mtrs = new okapi::MotorGroup({LEFT_MOTOR_BACK_PORT, LEFT_MOTOR_FRONT_PORT});
+okapi::MotorGroup* right_mtrs = new okapi::MotorGroup({RIGHT_MOTOR_BACK_PORT, RIGHT_MOTOR_FRONT_PORT});
+
 pros::Motor* center_mtr = new pros::Motor(CENTER_MOTOR_PORT);
 
 pros::Motor* intake_mtr = new pros::Motor(INTAKE_MOTOR_PORT);
@@ -105,7 +104,7 @@ void competition_initialize()
 			autonActions->push_back(new AutonAction(MOGO_IN_OUT, -50));
 
 		else if (controller->get_digital_new_press(a_MOGO_RELEASE))
-			autonActions->push_back(new AutonAction(MOGO_RELEASE, 50));
+			autonActions->push_back(new AutonAction(auton::MOGO_RELEASE, 50));
 
 		else if (controller->get_digital_new_press(a_BOOST_LAST))
 			autonActions->back()->change(10);

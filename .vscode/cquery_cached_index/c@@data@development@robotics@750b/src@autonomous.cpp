@@ -1,14 +1,14 @@
 #include "config.h"
-#include "include/okapi/api.hpp"
+#include "okapi/api.hpp"
 
 /*
 Have: WHEEL_CIRCUMFERENCE
 inches / WHEEL_CIRCUMFERENCE = rotations of wheel needed
 rotations * ENCODER_TICKS_PER_ROTATION = ticks needed
 */
-void driveFor(float inches)
+inline float inchesToDegrees(float inches)
 {
-  float ticksNeeded = inches / WHEEL_CIRCUMFERENCE * ENCODER_TICKS_PER_ROTATION;
+  return inches / WHEEL_CIRCUMFERENCE * 360.0f;
 }
 
 /**
@@ -26,7 +26,7 @@ void autonomous()
 {
   using namespace auton;
 
-
+  auto chassis = okapi::ChassisControllerFactory::create(*left_mtrs, *right_mtrs);
 
   for (AutonAction* step : *autonActions)
   {
@@ -40,7 +40,7 @@ void autonomous()
       case AutonActionType::FORWARD_BACKWARD:
         mag /= 100; // now in terms of tiles
         mag *= TILE_LENGTH; // now in terms of inches
-        driveFor(mag);
+        chassis.moveDistance(inchesToDegrees(mag));
         break;
       case AutonActionType::STRAFE:
         mag /= 100;
@@ -56,18 +56,19 @@ void autonomous()
       case AutonActionType::MOGO_RELEASE:
     		mogo_release_mtr->move_velocity(100);
     		break;
+      case AutonActionType::TURN:
+        // mag is in angles
+        // turn angle
+        float arcLength = 2.0 * BOT_RADIUS * PI * (mag / 360.0f);
+        float rot = (arcLength/(4.0f*PI)) * 360.0; // motor degrees?
+        chassis.turnAngle(rot);
     }
+
+    chassis.stop();
   }
 }
 
-void stopMotors()
-{
-	right_mtr_back->move_voltage(0);
-	right_mtr_front->move_voltage(0);
-	left_mtr_back->move_voltage(0);
-	left_mtr_front->move_voltage(0);
-}
-
+/*
 void moveBot(double inches, int32_t velocity, bool direction)
 {
   double desiredTicks = (ENCODER_TICKS_PER_ROTATION * (inches / WHEEL_CIRCUMFERENCE));
@@ -97,3 +98,4 @@ void moveBot(double inches, int32_t velocity, bool direction)
 
   stopMotors();
 }
+*/

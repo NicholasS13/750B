@@ -24,24 +24,22 @@ void opcontrol()
 			int turn = controller->get_analog(TURN_AXIS);
 			int forward = controller->get_analog(FORWARD_BACK_AXIS);
 
-			right_mtr_back->move_velocity(forward - turn);
-			right_mtr_front->move_velocity(forward - turn);
-			left_mtr_back->move_velocity(forward + turn);
-			left_mtr_front->move_velocity(forward + turn);
+			right_mtrs->moveVelocity(forward - turn);
+			left_mtrs->moveVelocity(forward + turn);
 		}
-		
+
 		if (controller->get_digital_new_press(MOGO_OUT))
 			mogo_mtr->move_velocity(80);
 		else if (controller->get_digital_new_press(MOGO_IN))
 			mogo_mtr->move_velocity(-80);
 		else if (controller->get_digital_new_press(MOGO_RELEASE))
 			mogo_release_mtr->move_velocity(-80);
-		
+
 		if (controller->get_digital_new_press(INTAKE_IN))
 			intake_mtr->move_velocity(-80);
 		else if (controller->get_digital_new_press(INTAKE_OUT))
 			intake_mtr->move_velocity(80);
-			
+
 		pros::delay(20);
 	}
 }
