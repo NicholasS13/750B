@@ -120,6 +120,8 @@ void competition_initialize()
 
 		if (refresh)
 			refreshAutonDisplay();
+		
+		// this refresh variable does not do anything yet
 
 		pros::delay(50);
 	}
