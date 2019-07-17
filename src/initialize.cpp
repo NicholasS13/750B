@@ -82,6 +82,8 @@ void competition_initialize()
 
 	while (!controller->get_digital_new_press(a_BREAK))
 	{
+		refresh = 1;
+		
 		if (controller->get_digital_new_press(a_FORWARD))
 			autonActions->push_back(new AutonAction(FORWARD_BACKWARD, 50));
 
@@ -120,8 +122,6 @@ void competition_initialize()
 
 		if (refresh)
 			refreshAutonDisplay();
-		
-		// this refresh variable does not do anything yet
 
 		pros::delay(50);
 	}
