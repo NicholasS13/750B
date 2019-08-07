@@ -17,29 +17,64 @@ void opcontrol()
 {
 	while (true)
 	{
-		if (controller->get_analog(STRAFE_AXIS))
-			center_mtr->move_velocity(controller->get_analog(STRAFE_AXIS));
+		int strafe = controller->get_analog(STRAFE_AXIS);
+		int turn;
+
+		if (strafe)
+			turn = 0;
+		else
+			turn = controller->get_analog(TURN_AXIS);
+		
+		int forward = controller->get_analog(FORWARD_BACK_AXIS);
+
+		right_drive_mtr->move_velocity(forward - turn);
+		left_drive_mtr->move_velocity(forward + turn);
+		
+		if (controller->get_digital(INTAKE_IN))
+		{
+			intake_mtr_right->move_velocity(-80);
+			intake_mtr_left->move_velocity(-80);
+		}
+		else if (controller->get_digital(INTAKE_OUT))
+		{
+			intake_mtr_right->move_velocity(80);
+			intake_mtr_left->move_velocity(80);
+		}
 		else
 		{
-			int turn = controller->get_analog(TURN_AXIS);
-			int forward = controller->get_analog(FORWARD_BACK_AXIS);
-
-			right_mtrs->moveVelocity(forward - turn);
-			left_mtrs->moveVelocity(forward + turn);
+			intake_mtr_right->set_voltage_limit(0);
+			intake_mtr_left->set_voltage_limit(0);
 		}
+		
 
-		if (controller->get_digital_new_press(MOGO_OUT))
-			mogo_mtr->move_velocity(80);
-		else if (controller->get_digital_new_press(MOGO_IN))
-			mogo_mtr->move_velocity(-80);
-		else if (controller->get_digital_new_press(MOGO_RELEASE))
-			mogo_release_mtr->move_velocity(-80);
+		if (controller->get_digital_new_press(PUSHER_OUT))
+		{
+			push_mtr_1->move_velocity(80); // one of them has to be reversed!!!
+			push_mtr_2->move_velocity(80); // one of them has to be reversed!!!
+		}
+		else if (controller->get_digital_new_press(PUSHER_IN))
+		{
+			push_mtr_1->move_velocity(-80); // one of them has to be reversed!!!
+			push_mtr_2->move_velocity(-80); // one of them has to be reversed!!!
+		}
+		else
+		{
+			push_mtr_1->set_voltage_limit(0); // one of them has to be reversed!!!
+			push_mtr_2->set_voltage_limit(0); // one of them has to be reversed!!!
+		}
+		
 
-		if (controller->get_digital_new_press(INTAKE_IN))
-			intake_mtr->move_velocity(-80);
-		else if (controller->get_digital_new_press(INTAKE_OUT))
-			intake_mtr->move_velocity(80);
-
+		if (controller->get_digital_new_press(PLATFORM_SHIFT_FORWARD))
+			platform_mtr->move_velocity(80);
+		else if (controller->get_digital_new_press(PLATFORM_SHIFT_BACKWARD))
+			platform_mtr->move_velocity(-80);
+		else
+			platform_mtr->set_voltage_limit(0); // TODO does this work to stop the motor?
+			
 		pros::delay(20);
 	}
 }
+
+/*
+
+*/

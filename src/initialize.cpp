@@ -1,29 +1,57 @@
 #include "config.h"
 
-std::vector<AutonAction*>* autonActions = new std::vector<AutonAction*>();
+std::vector<auton::AutonAction*>* autonActions = new std::vector<auton::AutonAction*>();
 
 pros::Controller* controller = new pros::Controller(pros::E_CONTROLLER_MASTER);
 
-okapi::MotorGroup* left_mtrs = new okapi::MotorGroup({LEFT_MOTOR_BACK_PORT, LEFT_MOTOR_FRONT_PORT});
-okapi::MotorGroup* right_mtrs = new okapi::MotorGroup({RIGHT_MOTOR_BACK_PORT, RIGHT_MOTOR_FRONT_PORT});
+// MOTORS
 
-pros::Motor* center_mtr = new pros::Motor(CENTER_MOTOR_PORT);
+pros::Motor* left_drive_mtr = new pros::Motor(LEFT_MOTOR_PORT);
+pros::Motor* right_drive_mtr = new pros::Motor(RIGHT_MOTOR_PORT);
+pros::Motor* center_drive_mtr = new pros::Motor(CENTER_MOTOR_PORT);
 
-pros::Motor* intake_mtr = new pros::Motor(INTAKE_MOTOR_PORT);
-pros::Motor* mogo_mtr = new pros::Motor(MOGO_MOTOR_PORT);
-pros::Motor* mogo_release_mtr = new pros::Motor(MOGO_RELEASE_MOTOR_PORT);
+pros::Motor* intake_mtr_left = new pros::Motor(INTAKE_MOTOR_LEFT_PORT);
+pros::Motor* intake_mtr_right = new pros::Motor(INTAKE_MOTOR_RIGHT_PORT);
 
-const pros::controller_analog_e_t& FORWARD_BACK_AXIS = ANALOG_LEFT_Y;
-const pros::controller_analog_e_t& TURN_AXIS = ANALOG_RIGHT_X;
-const pros::controller_analog_e_t& STRAFE_AXIS = ANALOG_LEFT_X;
+pros::Motor* platform_mtr = new pros::Motor(PLATFORM_MOTOR_PORT);
 
-const pros::controller_digital_e_t& INTAKE_IN = DIGITAL_R2;
-const pros::controller_digital_e_t& INTAKE_OUT = DIGITAL_R1;
+// pros::Motor* lift_mtr = new pros::Motor(LIFT_MOTOR_PORT);
 
-const pros::controller_digital_e_t& MOGO_OUT = DIGITAL_L2;
-const pros::controller_digital_e_t& MOGO_IN = DIGITAL_L1;
+pros::Motor* push_mtr_1 = new pros::Motor(PUSHER_MOTOR_1_PORT);
+pros::Motor* push_mtr_2 = new pros::Motor(PUSHER_MOTOR_2_PORT);
 
-const pros::controller_digital_e_t& MOGO_RELEASE = DIGITAL_X;
+// CONTROLLER BINDS
+
+const pros::controller_analog_e_t & FORWARD_BACK_AXIS = ANALOG_LEFT_Y;
+const pros::controller_analog_e_t& TURN_AXIS = ANALOG_LEFT_X;
+const pros::controller_analog_e_t& STRAFE_AXIS = ANALOG_RIGHT_X;
+
+const pros::controller_digital_e_t& INTAKE_IN = DIGITAL_R1;
+const pros::controller_digital_e_t& INTAKE_OUT = DIGITAL_R2;
+
+// const auto& LIFT_UP = DIGITAL_L1;
+// const auto& LIFT_DOWN = DIGITAL_L2;
+
+const pros::controller_digital_e_t& PUSHER_OUT = DIGITAL_L1;
+const pros::controller_digital_e_t& PUSHER_IN = DIGITAL_L2;
+
+const pros::controller_digital_e_t& PLATFORM_SHIFT_FORWARD = DIGITAL_UP;
+const pros::controller_digital_e_t& PLATFORM_SHIFT_BACKWARD = DIGITAL_DOWN;
+
+/*
+
+extern pros::Controller* controller;
+
+extern pros::Motor* left_mtr;
+extern pros::Motor* right_mtr;
+extern pros::Motor* center_mtr;
+
+extern okapi::MotorGroup* intake_mtrs;
+extern pros::Motor* push_mtr;
+extern pros::Motor* platform_mtr;
+extern pros::Motor* last_mtr; // ????
+
+ */
 
 void on_center_button()
 {
@@ -44,7 +72,7 @@ void on_center_button()
  */
 void initialize()
 {
-	pros::lcd::initialize();
+
 }
 
 /**
@@ -59,7 +87,7 @@ Updates the auton creation display
 */
 void refreshAutonDisplay()
 {
-	pros::lcd::set_text(autonActions->size(), autonActions->back()->to_string());
+
 }
 
 /**
@@ -82,8 +110,6 @@ void competition_initialize()
 
 	while (!controller->get_digital_new_press(a_BREAK))
 	{
-		refresh = 1;
-		
 		if (controller->get_digital_new_press(a_FORWARD))
 			autonActions->push_back(new AutonAction(FORWARD_BACKWARD, 50));
 
@@ -99,14 +125,14 @@ void competition_initialize()
 		else if (controller->get_digital_new_press(a_STRAFE_RIGHT))
 			autonActions->push_back(new AutonAction(STRAFE, 50));
 
-		else if (controller->get_digital_new_press(a_MOGO_OUT))
-			autonActions->push_back(new AutonAction(MOGO_IN_OUT, 50));
+		else if (controller->get_digital_new_press(a_PUSHER_OUT))
+			autonActions->push_back(new AutonAction(PUSHER_PUSH, 50));
 
-		else if (controller->get_digital_new_press(a_MOGO_IN))
-			autonActions->push_back(new AutonAction(MOGO_IN_OUT, -50));
+		else if (controller->get_digital_new_press(a_PUSHER_IN))
+			autonActions->push_back(new AutonAction(PUSHER_PUSH, -50));
 
-		else if (controller->get_digital_new_press(a_MOGO_RELEASE))
-			autonActions->push_back(new AutonAction(auton::MOGO_RELEASE, 50));
+		else if (controller->get_digital_new_press(a_TURN))
+			autonActions->push_back(new AutonAction(TURN, 50));
 
 		else if (controller->get_digital_new_press(a_BOOST_LAST))
 			autonActions->back()->change(10);
