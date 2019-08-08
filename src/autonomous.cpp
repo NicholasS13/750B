@@ -39,34 +39,50 @@ void autonomous()
       // 50 : 1/2
       // 100 : 1
       case AutonActionType::FORWARD_BACKWARD:
+      {
         mag /= 100; // now in terms of tiles
         mag *= TILE_LENGTH; // now in terms of inches
         chassis.moveDistance(static_cast<double>(mag) * okapi::inch);
         break;
+      }
       case AutonActionType::STRAFE:
+      {
         mag /= 100;
         mag *= TILE_LENGTH;
-        center_drive_mtr->move_velocity(mag);
+        // center_drive_mtr->move_velocity(mag);
         break;
+      }
       case AutonActionType::INTAKE_SPIN:
+      {
     		intake_mtr_left->move_velocity(mag);
         intake_mtr_right->move_velocity(mag);
     		break;
+      }
       case AutonActionType::TURN:
+      {
         // mag is in angles
         // turn angle
-        float arcLength = 2.0 * BOT_RADIUS * PI * (mag / 360.0f);
-        float rot = (arcLength/(4.0f*PI)) * 360.0; // motor degrees?
+        double arcLength = 2.0 * BOT_RADIUS * PI * (mag / 360.0);
+        double rot = (arcLength/(4.0*PI)) * 360.0; // motor degrees?
         chassis.turnAngle(rot);
         break;
+      }
       case AutonActionType::PLATFORM_SHIFT:
+      {
         if (platform_mtr->get_position() > PLATFORM_MOTOR_THRESHOLD)
           platform_mtr->move_velocity(50);
         else
           platform_mtr->move_velocity(-50);
+        break;
+      }
       case AutonActionType::PUSHER_PUSH:
-        push_mtr->move_velocity(mag);
+      {
+        push_mtr_1->move_velocity(mag);
+        push_mtr_2->move_velocity(mag);
+      }
     }
+
+    // FORWARD_BACKWARD, TURN, STRAFE, INTAKE_SPIN, PLATFORM_SHIFT, PUSHER_PUSH,
 
     chassis.stop();
     pros::delay(AUTON_ACTION_DELAY);

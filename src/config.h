@@ -7,32 +7,33 @@
 
 //      MOTOR PORTS
 
-const uint8_t LEFT_MOTOR_PORT = 13;
-const uint8_t RIGHT_MOTOR_PORT = 12;
-const uint8_t CENTER_MOTOR_PORT = 11;
+const uint8_t LEFT_MOTOR_PORT = 18;
+const uint8_t RIGHT_MOTOR_PORT = 16;
+// const uint8_t CENTER_MOTOR_PORT = 11;
 
-const uint8_t PLATFORM_MOTOR_PORT = 5;
+const uint8_t PLATFORM_MOTOR_PORT = 14;
 
-const uint8_t INTAKE_MOTOR_LEFT_PORT = 4;
-const uint8_t INTAKE_MOTOR_RIGHT_PORT = 3;
+const uint8_t INTAKE_MOTOR_LEFT_PORT = 20;
+const uint8_t INTAKE_MOTOR_RIGHT_PORT = 19;
 
-const uint8_t PUSHER_MOTOR_PORT = 2;
+const uint8_t PUSHER_MOTOR_1_PORT = 15;
+const uint8_t PUSHER_MOTOR_2_PORT = 17;
 
-const uint8_t LIFT_MOTOR_PORT = 1;
+// const uint8_t LIFT_MOTOR_PORT = 1;
 
 //      CONSTANTS
 
-const float BOT_RADIUS = 1.24; // TODO
+const float BOT_RADIUS = 10.6; // TODO
 
 const double WHEEL_RADIUS = 2.0;
 
 // center-to-center distance between the wheels (center-to-center meaning the width between the centers of both wheels).
-const double WHEELBASE_WIDTH = 5.5; // TODO
+const double WHEELBASE_WIDTH = 15.2; // TODO
 
 const double WHEEL_CIRCUMFERENCE = 2 * WHEEL_RADIUS * PI; // inches
 const uint8_t TILE_LENGTH = 24; // inches
 
-const uint16_t PLATFORM_MOTOR_THRESHOLD = 23482934; // TODO
+const uint16_t PLATFORM_MOTOR_THRESHOLD = 30; // TODO
 
 const uint16_t AUTON_ACTION_DELAY = 200;
 
@@ -40,18 +41,19 @@ const uint16_t AUTON_ACTION_DELAY = 200;
 
 extern const pros::controller_analog_e_t& FORWARD_BACK_AXIS;// = ANALOG_LEFT_Y;
 extern const pros::controller_analog_e_t& TURN_AXIS;// = ANALOG_RIGHT_X;
-extern const pros::controller_analog_e_t& STRAFE_AXIS;// = ANALOG_LEFT_X;
+// extern const pros::controller_analog_e_t& STRAFE_AXIS;// = ANALOG_LEFT_X;
 
 extern const pros::controller_digital_e_t& PUSHER_OUT;
 extern const pros::controller_digital_e_t& PUSHER_IN;
 
-extern const pros::controller_digital_e_t& PLATFORM_SHIFT;
+extern const pros::controller_digital_e_t& PLATFORM_SHIFT_FORWARD;
+extern const pros::controller_digital_e_t& PLATFORM_SHIFT_BACKWARD;
 
 extern const pros::controller_digital_e_t& INTAKE_IN;
 extern const pros::controller_digital_e_t& INTAKE_OUT;
 
-extern const pros::controller_digital_e_t& LIFT_UP;
-extern const pros::controller_digital_e_t& LIFT_DOWN;
+// extern const pros::controller_digital_e_t& LIFT_UP;
+// extern const pros::controller_digital_e_t& LIFT_DOWN;
 
 // auton creation keybinds
 namespace auton
@@ -79,37 +81,41 @@ namespace auton
 
 	enum AutonActionType
 	{
-	  FORWARD_BACKWARD, TURN, STRAFE, INTAKE_SPIN, PLATFORM_SHIFT, PUSHER_PUSH, 
+	  FORWARD_BACKWARD, TURN, STRAFE, INTAKE_SPIN, PLATFORM_SHIFT, PUSHER_PUSH,
 	};
 
-    class AutonAction
-    {
-    private:
-        auton::AutonActionType type;
-        uint16_t mag;
-        static std::string colonSpace;
-        std::string to_string(auton::AutonActionType type)
-        {
-            using namespace auton;
+	class AutonAction
+	{
+	private:
+			auton::AutonActionType type;
+			uint16_t mag;
+			std::string to_string(auton::AutonActionType type)
+			{
+					using namespace auton;
 
-            switch (type)
-            {
-                case FORWARD_BACKWARD: return "FORWARD_BACKWARD";
-                case TURN: return "TURN";
-                case STRAFE: return "STRAFE";
-                case INTAKE_SPIN: return "INTAKE_SPIN";
-                case PLATFORM_SHIFT: return "PLATFORM SHIFT";
-            }
-        }
-    public:
-        AutonAction(auton::AutonActionType type, uint16_t mag) { this->type = type; this->mag = mag; }
-        auton::AutonActionType getType() { return type; }
-        void change(int change) { mag += change; }
-        uint16_t getMagnitude() { return mag; }
-        std::string toString() { return to_string(type) + colonSpace + std::to_string(mag); };
-    };
-
-    std::string AutonAction::colonSpace = std::string(": ");
+					switch (type)
+					{
+							case FORWARD_BACKWARD: return "FORWARD_BACKWARD";
+							case TURN: return "TURN";
+							case STRAFE: return "STRAFE";
+							case INTAKE_SPIN: return "INTAKE_SPIN";
+							case PLATFORM_SHIFT: return "PLATFORM SHIFT";
+							case PUSHER_PUSH: return "PUSHER PUSH";
+					}
+			}
+	public:
+			AutonAction(auton::AutonActionType type, uint16_t mag) { this->type = type; this->mag = mag; }
+			auton::AutonActionType getType() { return type; }
+			void change(int change) { mag += change; }
+			uint16_t getMagnitude() { return mag; }
+			std::string toString() { return to_string(type) + getColonSpace() + std::to_string(mag); };
+			static std::string getColonSpace()
+			{
+				static std::string colonSpace = std::string(": ");
+				return colonSpace;
+			};
+	};
+    //auton::AutonAction::setColonSpace(std::string(": "));
 }
 
 extern std::vector<auton::AutonAction*>* autonActions;
@@ -119,14 +125,16 @@ extern pros::Controller* controller;
 
 extern pros::Motor* left_drive_mtr;
 extern pros::Motor* right_drive_mtr;
-extern pros::Motor* center_drive_mtr;
+// extern pros::Motor* center_drive_mtr;
 
 extern pros::Motor* intake_mtr_left;
 extern pros::Motor* intake_mtr_right;
 
-extern pros::Motor* push_mtr;
+extern pros::Motor* push_mtr_2;
+extern pros::Motor* push_mtr_1;
+
 extern pros::Motor* platform_mtr;
-extern pros::Motor* lift_mtr;
+// extern pros::Motor* lift_mtr;
 
 #endif
 
