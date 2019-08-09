@@ -7,28 +7,28 @@
 
 //      MOTOR PORTS
 
-const uint8_t LEFT_MOTOR_PORT = 13;
-const uint8_t RIGHT_MOTOR_PORT = 12;
-const uint8_t CENTER_MOTOR_PORT = 11;
+const uint8_t LEFT_MOTOR_PORT = 18;
+const uint8_t RIGHT_MOTOR_PORT = 16;
+// const uint8_t CENTER_MOTOR_PORT = 11;
 
-const uint8_t PLATFORM_MOTOR_PORT = 5;
+const uint8_t PLATFORM_MOTOR_PORT = 14;
 
-const uint8_t INTAKE_MOTOR_LEFT_PORT = 4;
-const uint8_t INTAKE_MOTOR_RIGHT_PORT = 3;
+const uint8_t INTAKE_MOTOR_LEFT_PORT = 20;
+const uint8_t INTAKE_MOTOR_RIGHT_PORT = 19;
 
-const uint8_t PUSHER_MOTOR_1_PORT = 2;
-const uint8_t PUSHER_MOTOR_2_PORT = 10;
+const uint8_t PUSHER_MOTOR_1_PORT = 15;
+const uint8_t PUSHER_MOTOR_2_PORT = 17;
 
 // const uint8_t LIFT_MOTOR_PORT = 1;
 
 //      CONSTANTS
 
-const float BOT_RADIUS = 1.24; // TODO
+const float BOT_RADIUS = 10.6; // TODO
 
 const double WHEEL_RADIUS = 2.0;
 
 // center-to-center distance between the wheels (center-to-center meaning the width between the centers of both wheels).
-const double WHEELBASE_WIDTH = 5.5; // TODO
+const double WHEELBASE_WIDTH = 15.2; // TODO
 
 const double WHEEL_CIRCUMFERENCE = 2 * WHEEL_RADIUS * PI; // inches
 const uint8_t TILE_LENGTH = 24; // inches
@@ -41,7 +41,7 @@ const uint16_t AUTON_ACTION_DELAY = 200;
 
 extern const pros::controller_analog_e_t& FORWARD_BACK_AXIS;// = ANALOG_LEFT_Y;
 extern const pros::controller_analog_e_t& TURN_AXIS;// = ANALOG_RIGHT_X;
-extern const pros::controller_analog_e_t& STRAFE_AXIS;// = ANALOG_LEFT_X;
+// extern const pros::controller_analog_e_t& STRAFE_AXIS;// = ANALOG_LEFT_X;
 
 extern const pros::controller_digital_e_t& PUSHER_OUT;
 extern const pros::controller_digital_e_t& PUSHER_IN;
@@ -125,7 +125,7 @@ extern pros::Controller* controller;
 
 extern pros::Motor* left_drive_mtr;
 extern pros::Motor* right_drive_mtr;
-extern pros::Motor* center_drive_mtr;
+// extern pros::Motor* center_drive_mtr;
 
 extern pros::Motor* intake_mtr_left;
 extern pros::Motor* intake_mtr_right;

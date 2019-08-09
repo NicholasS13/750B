@@ -6,23 +6,23 @@ pros::Controller* controller = new pros::Controller(pros::E_CONTROLLER_MASTER);
 
 // MOTORS
 
-pros::Motor* left_drive_mtr = new pros::Motor(LEFT_MOTOR_PORT);
-pros::Motor* right_drive_mtr = new pros::Motor(RIGHT_MOTOR_PORT);
-pros::Motor* center_drive_mtr = new pros::Motor(CENTER_MOTOR_PORT);
+pros::Motor* left_drive_mtr = new pros::Motor(LEFT_MOTOR_PORT, pros::E_MOTOR_GEARSET_18, false, pros::E_MOTOR_ENCODER_DEGREES);
+pros::Motor* right_drive_mtr = new pros::Motor(RIGHT_MOTOR_PORT, pros::E_MOTOR_GEARSET_18, true, pros::E_MOTOR_ENCODER_DEGREES);
+// pros::Motor* center_drive_mtr = new pros::Motor(CENTER_MOTOR_PORT);
 
-pros::Motor* intake_mtr_left = new pros::Motor(INTAKE_MOTOR_LEFT_PORT);
-pros::Motor* intake_mtr_right = new pros::Motor(INTAKE_MOTOR_RIGHT_PORT);
+pros::Motor* intake_mtr_left = new pros::Motor(INTAKE_MOTOR_LEFT_PORT, pros::E_MOTOR_GEARSET_18, false, pros::E_MOTOR_ENCODER_DEGREES);
+pros::Motor* intake_mtr_right = new pros::Motor(INTAKE_MOTOR_RIGHT_PORT, pros::E_MOTOR_GEARSET_18, true, pros::E_MOTOR_ENCODER_DEGREES);
 
-pros::Motor* platform_mtr = new pros::Motor(PLATFORM_MOTOR_PORT);
+pros::Motor* platform_mtr = new pros::Motor(PLATFORM_MOTOR_PORT, pros::E_MOTOR_GEARSET_18, false, pros::E_MOTOR_ENCODER_DEGREES);
 
 // pros::Motor* lift_mtr = new pros::Motor(LIFT_MOTOR_PORT);
 
-pros::Motor* push_mtr_1 = new pros::Motor(PUSHER_MOTOR_1_PORT);
-pros::Motor* push_mtr_2 = new pros::Motor(PUSHER_MOTOR_2_PORT);
+pros::Motor* push_mtr_1 = new pros::Motor(PUSHER_MOTOR_1_PORT, pros::E_MOTOR_GEARSET_18, true, pros::E_MOTOR_ENCODER_DEGREES);
+pros::Motor* push_mtr_2 = new pros::Motor(PUSHER_MOTOR_2_PORT, pros::E_MOTOR_GEARSET_18, false, pros::E_MOTOR_ENCODER_DEGREES);
 
 // CONTROLLER BINDS
 
-const pros::controller_analog_e_t & FORWARD_BACK_AXIS = ANALOG_LEFT_Y;
+const pros::controller_analog_e_t& FORWARD_BACK_AXIS = ANALOG_LEFT_Y;
 const pros::controller_analog_e_t& TURN_AXIS = ANALOG_LEFT_X;
 const pros::controller_analog_e_t& STRAFE_AXIS = ANALOG_RIGHT_X;
 
@@ -72,6 +72,8 @@ void on_center_button()
  */
 void initialize()
 {
+	pros::lcd::initialize();
+	pros::lcd::print(2, "This shit works on god");
 
 }
 
@@ -87,7 +89,7 @@ Updates the auton creation display
 */
 void refreshAutonDisplay()
 {
-
+	
 }
 
 /**
