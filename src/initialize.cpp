@@ -8,17 +8,20 @@ pros::Controller* controller = new pros::Controller(pros::E_CONTROLLER_MASTER);
 
 pros::Motor* left_drive_mtr = new pros::Motor(LEFT_MOTOR_PORT, pros::E_MOTOR_GEARSET_18, false, pros::E_MOTOR_ENCODER_DEGREES);
 pros::Motor* right_drive_mtr = new pros::Motor(RIGHT_MOTOR_PORT, pros::E_MOTOR_GEARSET_18, true, pros::E_MOTOR_ENCODER_DEGREES);
-// pros::Motor* center_drive_mtr = new pros::Motor(CENTER_MOTOR_PORT);
+pros::Motor* center_drive_mtr = new pros::Motor(CENTER_MOTOR_PORT);
 
 pros::Motor* intake_mtr_left = new pros::Motor(INTAKE_MOTOR_LEFT_PORT, pros::E_MOTOR_GEARSET_18, false, pros::E_MOTOR_ENCODER_DEGREES);
 pros::Motor* intake_mtr_right = new pros::Motor(INTAKE_MOTOR_RIGHT_PORT, pros::E_MOTOR_GEARSET_18, true, pros::E_MOTOR_ENCODER_DEGREES);
 
-pros::Motor* platform_mtr = new pros::Motor(PLATFORM_MOTOR_PORT, pros::E_MOTOR_GEARSET_18, false, pros::E_MOTOR_ENCODER_DEGREES);
+// pros::Motor* platform_mtr = new pros::Motor(PLATFORM_MOTOR_PORT, pros::E_MOTOR_GEARSET_18, false, pros::E_MOTOR_ENCODER_DEGREES);
 
-// pros::Motor* lift_mtr = new pros::Motor(LIFT_MOTOR_PORT);
+pros::Motor* lift_mtr_1 = new pros::Motor(LIFT_MOTOR_1_PORT);
+pros::Motor* lift_mtr_2 = new pros::Motor(LIFT_MOTOR_2_PORT);
 
-pros::Motor* push_mtr_1 = new pros::Motor(PUSHER_MOTOR_1_PORT, pros::E_MOTOR_GEARSET_18, true, pros::E_MOTOR_ENCODER_DEGREES);
-pros::Motor* push_mtr_2 = new pros::Motor(PUSHER_MOTOR_2_PORT, pros::E_MOTOR_GEARSET_18, false, pros::E_MOTOR_ENCODER_DEGREES);
+pros::Motor* claw_mtr = new pros::Motor(CLAW_MOTOR_PORT);
+
+// pros::Motor* push_mtr_1 = new pros::Motor(PUSHER_MOTOR_1_PORT, pros::E_MOTOR_GEARSET_18, true, pros::E_MOTOR_ENCODER_DEGREES);
+// pros::Motor* push_mtr_2 = new pros::Motor(PUSHER_MOTOR_2_PORT, pros::E_MOTOR_GEARSET_18, false, pros::E_MOTOR_ENCODER_DEGREES);
 
 // CONTROLLER BINDS
 
@@ -29,14 +32,14 @@ const pros::controller_analog_e_t& STRAFE_AXIS = ANALOG_RIGHT_X;
 const pros::controller_digital_e_t& INTAKE_IN = DIGITAL_R1;
 const pros::controller_digital_e_t& INTAKE_OUT = DIGITAL_R2;
 
-// const auto& LIFT_UP = DIGITAL_L1;
-// const auto& LIFT_DOWN = DIGITAL_L2;
+const auto& LIFT_UP = DIGITAL_L1;
+const auto& LIFT_DOWN = DIGITAL_L2;
 
-const pros::controller_digital_e_t& PUSHER_OUT = DIGITAL_L1;
-const pros::controller_digital_e_t& PUSHER_IN = DIGITAL_L2;
+// const pros::controller_digital_e_t& PUSHER_OUT = DIGITAL_L1;
+// const pros::controller_digital_e_t& PUSHER_IN = DIGITAL_L2;
 
-const pros::controller_digital_e_t& PLATFORM_SHIFT_FORWARD = DIGITAL_UP;
-const pros::controller_digital_e_t& PLATFORM_SHIFT_BACKWARD = DIGITAL_DOWN;
+// const pros::controller_digital_e_t& PLATFORM_SHIFT_FORWARD = DIGITAL_UP;
+// const pros::controller_digital_e_t& PLATFORM_SHIFT_BACKWARD = DIGITAL_DOWN;
 
 /*
 
@@ -127,11 +130,11 @@ void competition_initialize()
 		else if (controller->get_digital_new_press(a_STRAFE_RIGHT))
 			autonActions->push_back(new AutonAction(STRAFE, 50));
 
-		else if (controller->get_digital_new_press(a_PUSHER_OUT))
-			autonActions->push_back(new AutonAction(PUSHER_PUSH, 50));
+		else if (controller->get_digital_new_press(a_LIFT_UP))
+			autonActions->push_back(new AutonAction(LIFT_MOVE, 50));
 
-		else if (controller->get_digital_new_press(a_PUSHER_IN))
-			autonActions->push_back(new AutonAction(PUSHER_PUSH, -50));
+		else if (controller->get_digital_new_press(a_LIFT_DOWN))
+			autonActions->push_back(new AutonAction(LIFT_MOVE, -50));
 
 		else if (controller->get_digital_new_press(a_TURN))
 			autonActions->push_back(new AutonAction(TURN, 50));
