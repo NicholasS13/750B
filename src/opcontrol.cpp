@@ -17,18 +17,24 @@ void opcontrol()
 {
 	while (true)
 	{
-		// int strafe = controller->get_analog(STRAFE_AXIS);
+		int strafe = controller->get_analog(STRAFE_AXIS);
 		int turn;
-
-		// if (strafe)
-			// turn = 0;
-		// else
-			turn = controller->get_analog(TURN_AXIS);
 
 		int forward = controller->get_analog(FORWARD_BACK_AXIS);
 
-		right_drive_mtr->move_velocity((forward - turn) / 2);
-		left_drive_mtr->move_velocity((forward + turn) / 2);
+		if (strafe)
+		{
+			turn = 0;
+			center_drive_mtr->move_velocity(strafe * 2);
+			forward *= 1.5; // 2?
+		}
+		else
+		{
+			turn = controller->get_analog(TURN_AXIS);
+		}
+
+		right_drive_mtr->move_velocity((forward - turn));
+		left_drive_mtr->move_velocity((forward + turn));
 
 		if (controller->get_digital(INTAKE_IN))
 		{
@@ -45,31 +51,6 @@ void opcontrol()
 			intake_mtr_right->move_velocity(0);
 			intake_mtr_left->move_velocity(0);
 		}
-
-
-		if (controller->get_digital(PUSHER_OUT))
-		{
-			push_mtr_1->move_velocity(70); // one of them has to be reversed!!!
-			push_mtr_2->move_velocity(70); // one of them has to be reversed!!!
-		}
-		else if (controller->get_digital(PUSHER_IN))
-		{
-			push_mtr_1->move_velocity(-70); // one of them has to be reversed!!!
-			push_mtr_2->move_velocity(-70); // one of them has to be reversed!!!
-		}
-		else
-		{
-			push_mtr_1->move_velocity(0); // one of them has to be reversed!!!
-			push_mtr_2->move_velocity(0); // one of them has to be reversed!!!
-		}
-
-
-		if (controller->get_digital(PLATFORM_SHIFT_FORWARD))
-			platform_mtr->move_velocity(100);
-		else if (controller->get_digital(PLATFORM_SHIFT_BACKWARD))
-			platform_mtr->move_velocity(-100);
-		else
-			platform_mtr->move_velocity(0); // TODO does this work to stop the motor?
 
 		pros::delay(20);
 	}

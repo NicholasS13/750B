@@ -67,18 +67,15 @@ void autonomous()
         chassis.turnAngle(rot);
         break;
       }
-      case AutonActionType::PLATFORM_SHIFT:
+      case AutonActionType::CLAW_CLAMP:
       {
-        if (platform_mtr->get_position() > PLATFORM_MOTOR_THRESHOLD)
-          platform_mtr->move_velocity(50);
-        else
-          platform_mtr->move_velocity(-50);
+        claw_mtr->move_velocity(mag * 2);
         break;
       }
-      case AutonActionType::PUSHER_PUSH:
+      case AutonActionType::LIFT_MOVE:
       {
-        push_mtr_1->move_velocity(mag);
-        push_mtr_2->move_velocity(mag);
+        lift_mtr_1->move_velocity(mag * 2);
+        lift_mtr_2->move_velocity(mag * 2);
       }
     }
 

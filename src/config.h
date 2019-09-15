@@ -9,17 +9,20 @@
 
 const uint8_t LEFT_MOTOR_PORT = 18;
 const uint8_t RIGHT_MOTOR_PORT = 16;
-// const uint8_t CENTER_MOTOR_PORT = 11;
+const uint8_t CENTER_MOTOR_PORT = 11;
 
-const uint8_t PLATFORM_MOTOR_PORT = 14;
+// const uint8_t PLATFORM_MOTOR_PORT = 14;
 
 const uint8_t INTAKE_MOTOR_LEFT_PORT = 20;
 const uint8_t INTAKE_MOTOR_RIGHT_PORT = 19;
 
-const uint8_t PUSHER_MOTOR_1_PORT = 15;
-const uint8_t PUSHER_MOTOR_2_PORT = 17;
+// const uint8_t PUSHER_MOTOR_1_PORT = 15;
+// const uint8_t PUSHER_MOTOR_2_PORT = 17;
 
-// const uint8_t LIFT_MOTOR_PORT = 1;
+const uint8_t LIFT_MOTOR_1_PORT = 2;
+const uint8_t LIFT_MOTOR_2_PORT = 4;
+
+const uint8_t CLAW_MOTOR_PORT = 6;
 
 //      CONSTANTS
 
@@ -41,18 +44,21 @@ const uint16_t AUTON_ACTION_DELAY = 200;
 
 extern const pros::controller_analog_e_t& FORWARD_BACK_AXIS;// = ANALOG_LEFT_Y;
 extern const pros::controller_analog_e_t& TURN_AXIS;// = ANALOG_RIGHT_X;
-// extern const pros::controller_analog_e_t& STRAFE_AXIS;// = ANALOG_LEFT_X;
+extern const pros::controller_analog_e_t& STRAFE_AXIS;// = ANALOG_LEFT_X;
 
-extern const pros::controller_digital_e_t& PUSHER_OUT;
-extern const pros::controller_digital_e_t& PUSHER_IN;
+// extern const pros::controller_digital_e_t& PUSHER_OUT;
+// extern const pros::controller_digital_e_t& PUSHER_IN;
 
-extern const pros::controller_digital_e_t& PLATFORM_SHIFT_FORWARD;
-extern const pros::controller_digital_e_t& PLATFORM_SHIFT_BACKWARD;
+// extern const pros::controller_digital_e_t& PLATFORM_SHIFT_FORWARD;
+// extern const pros::controller_digital_e_t& PLATFORM_SHIFT_BACKWARD;
 
 extern const pros::controller_digital_e_t& INTAKE_IN;
 extern const pros::controller_digital_e_t& INTAKE_OUT;
 
-// extern const pros::controller_digital_e_t& LIFT_UP;
+extern const pros::controller_digital_e_t& LIFT_UP;
+extern const pros::controller_digital_e_t& LIFT_DOWN;
+
+// extern const pros::controller_digital_e_t& _DOWN;
 // extern const pros::controller_digital_e_t& LIFT_DOWN;
 
 // auton creation keybinds
@@ -67,8 +73,8 @@ namespace auton
 
 	//const auto a_TURN = pros::E_CONTROLLER_DIGITAL_
 
-	const auto a_PUSHER_OUT = pros::E_CONTROLLER_DIGITAL_L2;
-	const auto a_PUSHER_IN = pros::E_CONTROLLER_DIGITAL_L1;
+	const auto a_LIFT_UP = pros::E_CONTROLLER_DIGITAL_L2;
+	const auto a_LIFT_DOWN = pros::E_CONTROLLER_DIGITAL_L1;
 
 	const auto a_TURN = pros::E_CONTROLLER_DIGITAL_X;
 
@@ -81,7 +87,7 @@ namespace auton
 
 	enum AutonActionType
 	{
-	  FORWARD_BACKWARD, TURN, STRAFE, INTAKE_SPIN, PLATFORM_SHIFT, PUSHER_PUSH,
+	  FORWARD_BACKWARD, TURN, STRAFE, INTAKE_SPIN, CLAW_CLAMP, LIFT_MOVE//, PLATFORM_SHIFT, PUSHER_PUSH,
 	};
 
 	class AutonAction
@@ -99,8 +105,8 @@ namespace auton
 							case TURN: return "TURN";
 							case STRAFE: return "STRAFE";
 							case INTAKE_SPIN: return "INTAKE_SPIN";
-							case PLATFORM_SHIFT: return "PLATFORM SHIFT";
-							case PUSHER_PUSH: return "PUSHER PUSH";
+							case CLAW_CLAMP: return "CLAW CLAMP";
+							case LIFT_MOVE: return "LIFT MOVE";
 					}
 			}
 	public:
@@ -109,6 +115,10 @@ namespace auton
 			void change(int change) { mag += change; }
 			uint16_t getMagnitude() { return mag; }
 			std::string toString() { return to_string(type) + getColonSpace() + std::to_string(mag); };
+            std::string toStringShort()
+            {
+                return to_string(type)[0] + std::to_string(mag);
+            }
 			static std::string getColonSpace()
 			{
 				static std::string colonSpace = std::string(": ");
@@ -125,16 +135,19 @@ extern pros::Controller* controller;
 
 extern pros::Motor* left_drive_mtr;
 extern pros::Motor* right_drive_mtr;
-// extern pros::Motor* center_drive_mtr;
+extern pros::Motor* center_drive_mtr;
 
 extern pros::Motor* intake_mtr_left;
 extern pros::Motor* intake_mtr_right;
 
-extern pros::Motor* push_mtr_2;
-extern pros::Motor* push_mtr_1;
+// extern pros::Motor* push_mtr_2;
+// extern pros::Motor* push_mtr_1;
 
-extern pros::Motor* platform_mtr;
-// extern pros::Motor* lift_mtr;
+// extern pros::Motor* platform_mtr;
+extern pros::Motor* lift_mtr_1;
+extern pros::Motor* lift_mtr_2;
+
+extern pros::Motor* claw_mtr;
 
 #endif
 
